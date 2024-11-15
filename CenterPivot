@@ -1,0 +1,21 @@
+import maya.cmds as cmds
+
+def move_pivot_to_center():
+    # Get selected objects
+    selected_objects = cmds.ls(selection=True, long=True)
+
+    if not selected_objects:
+        cmds.warning("Please select an object first!")
+        return
+
+    for obj in selected_objects:
+        # Get the bounding box of the object
+        bbox = cmds.exactWorldBoundingBox(obj)
+        
+        # Calculate the center point of the bounding box
+        center_point = [(bbox[0] + bbox[3]) / 2, (bbox[1] + bbox[4]) / 2, (bbox[2] + bbox[5]) / 2]
+        
+        # Move the pivot point of the object to the center point
+        cmds.xform(obj, piv=center_point, ws=True)
+
+move_pivot_to_center()
